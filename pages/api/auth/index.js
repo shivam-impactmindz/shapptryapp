@@ -9,12 +9,11 @@ export default async function handler(req, res) {
     }
 
     try {
-  
       // Step 1: Redirect user to Shopify OAuth URL
       const params = new URLSearchParams({
         client_id: process.env.SHOPIFY_API_KEY,
         scope: "read_products,write_orders", // Adjust the scope based on your app's needs
-        redirect_uri: `/api/auth/callback`, // The callback URL
+        redirect_uri: `https://shapptryapp.vercel.app/api/auth/callback`, // The callback URL
         state: Math.random().toString(36).substring(7), // A unique state value
       });
 
