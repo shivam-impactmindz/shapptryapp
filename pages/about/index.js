@@ -1,6 +1,6 @@
 const About  = ()=>{
     return(
-        <div>This is about one</div>
+        <div>I am shivam here, This is about page </div>
     )
 }
 export default About;
