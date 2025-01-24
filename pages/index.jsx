@@ -1,153 +1,81 @@
-import isInitialLoad from "@/utils/middleware/isInitialLoad";
-import {
-  BlockStack,
-  Button,
-  Card,
-  InlineStack,
-  Layout,
-  Page,
-  Text,
-} from "@shopify/polaris";
-import { ExternalIcon } from "@shopify/polaris-icons";
-import { useRouter } from "next/router";
+'use Client'
+import { useState } from "react";
+import { Button, Card, Page, Layout, BlockStack, Text, InlineStack, TextField, Spinner } from "@shopify/polaris";
+import axios from "axios";
+const YourComponent = () => {
+  const [shopName, setShopName] = useState('');
+  const [submittedShop, setSubmittedShop] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false); // For loading state
 
-export async function getServerSideProps(context) {
-  //DO NOT REMOVE THIS.
-  return await isInitialLoad(context);
-}
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    
+    if (!shopName) {
+      // Ensure shopName is not empty
+      alert("Please enter a valid Shopify shop name.");
+      return;
+    }
+    try{
+         let res = await axios.post('/api/auth',{shop:shopName});
+         if(res.data.isSuccess){
+          window.location.href = res.data.data; 
+         }
+    }catch(err){
+      console.log(err)
+    }
 
-const HomePage = () => {
-  const router = useRouter();
-  const isDev = process.env.NODE_ENV === "development";
+    
+    // Simulating an API call (you can replace this with actual logic)
+    
+  };
 
   return (
-    <>
-      <Page title="Home">
-        <Layout>
-          {isDev ? (
-            <Layout.Section variant="fullWidth">
-              <Card>
-                <BlockStack gap="200">
-                  <Text as="h2" variant="headingMd">
-                    Debug Cards
-                  </Text>
-                  <Text>
-                    Explore how the repository handles data fetching from the
-                    backend, App Proxy, making GraphQL requests, Billing API and
-                    more.
-                  </Text>
-                  <InlineStack wrap={false} align="end">
-                    <Button
-                      variant="primary"
-                      onClick={() => {
-                        router.push("/debug");
-                      }}
-                    >
-                      Debug Cards
-                    </Button>
-                  </InlineStack>
-                </BlockStack>
-              </Card>
-            </Layout.Section>
-          ) : null}
-          <Layout.Section variant="oneHalf">
-            <Card>
-              <BlockStack gap="200">
-                <Text as="h2" variant="headingMd">
-                  App Bridge CDN
-                </Text>
-                <Text>AppBridge has moved from an npm package to CDN</Text>
-                <InlineStack wrap={false} align="end">
-                  <Button
-                    variant="primary"
-                    external
-                    icon={ExternalIcon}
-                    onClick={() => {
-                      open(
-                        "https://shopify.dev/docs/api/app-bridge-library/reference",
-                        "_blank"
-                      );
-                    }}
-                  >
-                    Explore
-                  </Button>
-                </InlineStack>
-              </BlockStack>
-            </Card>
-          </Layout.Section>
-          <Layout.Section variant="oneHalf">
-            <Card>
-              <BlockStack gap="200">
-                <Text as="h2" variant="headingMd">
-                  Repository
-                </Text>
-                <Text>
-                  Found a bug? Open an issue on the repository, or star on
-                  GitHub
-                </Text>
+    <Page title="Home">
+      <Layout>
+        {/* Form Section for Shopify Shop Name */}
+        <Layout.Section variant="oneHalf">
+          <Card>
+            <BlockStack gap="200">
+              <Text as="h2" variant="headingMd">
+                Shopify Shop Name
+              </Text>
+              <Text variant="bodyMd" color="subdued">
+                Please enter your Shopify store name to continue.
+              </Text>
+              
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  label="Shopify Store Name"
+                  value={shopName}
+                  onChange={(value) => setShopName(value)}
+                  autoComplete="off"
+                  placeholder="e.g. my-shop-name.myshopify.com"
+                  helpText="Your store name on Shopify (e.g., 'my-store.myshopify.com')"
+                  required
+                />
                 <InlineStack wrap={false} align="end" gap="200">
-                  <Button
-                    external
-                    icon={ExternalIcon}
-                    onClick={() => {
-                      open(
-                        "https://github.com/kinngh/shopify-nextjs-prisma-app/issues?q=is%3Aissue",
-                        "_blank"
-                      );
-                    }}
+                  <Button 
+                    variant="primary" 
+                    submit 
+                    loading={isSubmitting} // Show loading spinner when submitting
+                    disabled={isSubmitting || !shopName} // Disable if submitting or input is empty
                   >
-                    Issues
-                  </Button>
-                  <Button
-                    external
-                    variant="primary"
-                    icon={ExternalIcon}
-                    onClick={() => {
-                      open(
-                        "https://github.com/kinngh/shopify-nextjs-prisma-app",
-                        "_blank"
-                      );
-                    }}
-                  >
-                    Star
+                    {isSubmitting ? <Spinner size="small" /> : "Submit"}
                   </Button>
                 </InlineStack>
-              </BlockStack>
-            </Card>
-          </Layout.Section>
-          <Layout.Section variant="oneHalf">
-            <Card>
-              <BlockStack gap="200">
-                <Text as="h2" variant="headingMd">
-                  Course
+              </form>
+
+              {submittedShop && (
+                <Text as="p" variant="bodyMd" color="success">
+                  <strong>Shop Name Submitted:</strong> {submittedShop}
                 </Text>
-                <Text>
-                  [BETA] I'm building course as a live service on How To Build
-                  Shopify Apps
-                </Text>
-                <InlineStack wrap={false} align="end">
-                  <Button
-                    external
-                    variant="primary"
-                    icon={ExternalIcon}
-                    onClick={() => {
-                      open(
-                        "https://kinngh.gumroad.com/l/how-to-make-shopify-apps?utm_source=boilerplate&utm_medium=nextjs",
-                        "_blank"
-                      );
-                    }}
-                  >
-                    Buy
-                  </Button>
-                </InlineStack>
-              </BlockStack>
-            </Card>
-          </Layout.Section>
-          <Layout.Section variant="oneHalf" />
-        </Layout>
-      </Page>
-    </>
+              )}
+            </BlockStack>
+          </Card>
+        </Layout.Section>
+      </Layout>
+    </Page>
   );
 };
 
-export default HomePage;
+export default YourComponent;
