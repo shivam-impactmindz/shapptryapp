@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
       // Redirect to a home page with the necessary query parameters
       
-      res.redirect(`/home?host=${req.body.host}&shop=${session.shop}`);
+      res.redirect(`/about?host=${req.body.host}&shop=${session.shop}`);
     } catch (error) {
       console.error("Error in auth callback:", error);
       res.status(500).send("Error during authentication");
