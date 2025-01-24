@@ -1,0 +1,61 @@
+{
+  "name": "shopify-nextjs-prisma-app",
+  "version": "2025.01.23",
+  "type": "module",
+  "author": {
+    "name": "Harshdeep Singh Hura",
+    "url": "https://harshdeephura.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kinngh/shopify-nextjs-prisma-app.git"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "pretty": "prettier --write ./",
+    "update": "ncu -u",
+    "-----> Tunnel <-----": "",
+    "ngrok:auth": "ngrok authtoken <auth-token-goes-here>",
+    "ngrok": "ngrok http 3000",
+    "cloudflare": "cloudflared tunnel --url localhost:3000",
+    "-----> Shopify <-----": "",
+    "g:install": "npm i -g @shopify/cli@latest",
+    "shopify": "shopify",
+    "update:config": "node _developer/tomlWriter.js; npm run pretty; shopify app deploy;",
+    "update:url": "node _developer/updateDashboard.js",
+    "-----> Database <-----": "",
+    "pg:create": "mkdir database; pg_ctl -D database init",
+    "pg:start": "pg_ctl -D database start",
+    "pg:stop": "pg_ctl -D database stop",
+    "db:create": "mkdir database; mysqld --initialize-insecure --datadir=./database",
+    "db:start": "mysqld --datadir=./database",
+    "db:stop": "mysqladmin shutdown",
+    "-----> Prisma <-----": "",
+    "prisma": "npx prisma",
+    "prisma:push": "npx prisma db push",
+    "prisma:pull": "npx prisma db pull",
+    "-----> Reserved Scripts <-----": "",
+    "prepare": "npx prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.2.1",
+    "@shopify/polaris": "^13.9.2",
+    "@shopify/shopify-api": "^11.7.0",
+    "cryptr": "^6.3.0",
+    "next": "^15.1.6",
+    "next-api-middleware": "^3.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@iarna/toml": "^2.2.5",
+    "@shopify/cli-kit": "^3.74.0",
+    "dotenv": "^16.4.7",
+    "ngrok": "^5.0.0-beta.2",
+    "npm-check-updates": "^17.1.14",
+    "prettier": "^3.4.2",
+    "prisma": "^6.2.1"
+  }
+}

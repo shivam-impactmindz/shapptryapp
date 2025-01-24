@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model stores {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  shop     String   @unique
+  isActive Boolean? @default(false)
+}
+
+model session {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  content String?
+  shop    String?
+
+  @@index([shop])
+}
