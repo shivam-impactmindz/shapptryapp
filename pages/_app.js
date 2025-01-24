@@ -8,12 +8,12 @@ const App = ({ Component, pageProps }) => {
   return (
     <>
       <PolarisProvider i18n={translations}>
-        <AppBridgeProvider>
+       
           <ui-nav-menu>
             
           </ui-nav-menu>
           <Component {...pageProps} />
-        </AppBridgeProvider>
+      
       </PolarisProvider>
     </>
   );
