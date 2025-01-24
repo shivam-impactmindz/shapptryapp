@@ -17,8 +17,8 @@ const YourComponent = () => {
     }
     try{
          let res = await axios.post('/api/auth',{shop:shopName});
-         if(res.data.isSuccess){
-          window.location.href = res.data.data; 
+         if(res?.data?.isSuccess){
+          window.location.href = res?.data?.data; 
          }
     }catch(err){
       console.log(err)
